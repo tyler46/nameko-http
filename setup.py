@@ -29,6 +29,7 @@ setup(
     description="Http utilities for Nameko built-in HTTP extension",
     install_requires=[
         'nameko>=2.11.0',
+        'python-mimeparse>=1.6.0',
     ],
     long_description=readme + '\n\n' + history,
     include_package_data=True,
