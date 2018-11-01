@@ -58,6 +58,6 @@ setup(
         'requests-mock>=1.5.2',
     ],
     url='https://app.assembla.com/spaces/retail-platform/git-12/source',
-    version='0.1.0',
+    version='0.1.1',
     zip_safe=False,
 )
