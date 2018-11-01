@@ -3,6 +3,7 @@ import json
 
 import mimeparse
 from nameko.exceptions import BadRequest
+from werkzeug.wrappers import Response
 
 from nameko_http.exceptions import HttpMalformedJSON
 
@@ -75,3 +76,11 @@ def get_json(request):
         return json.loads(body)
     except ValueError:
         raise HttpMalformedJSON('Malformed JSON. Could not decode the request body.')
+
+
+def api_response(status=200, data=None):
+    return Response(
+        response=json.dumps(data) if data is not None else '',
+        status=status,
+        mimetype='application/json'
+    )
