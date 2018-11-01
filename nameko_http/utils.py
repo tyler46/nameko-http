@@ -50,7 +50,7 @@ def is_json_request(mimetype):
 
 
 def as_string(items):
-    return ','.join(items)
+    return ', '.join(items)
 
 
 def get_json(request):

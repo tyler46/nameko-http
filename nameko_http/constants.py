@@ -1,7 +1,7 @@
 CORS_ALLOW_ORIGINS_LIST = ['*']
 CORS_ALLOW_METHODS_LIST = [
     'OPTIONS',
-    'GET'
+    'GET',
     'POST',
     'PUT',
     'PATCH',

@@ -20,7 +20,7 @@ class HttpApiEntrypoint(HttpRequestHandler):
     server = WebServer()
 
     def __init__(self, method, url, **kwargs):
-        self.cors_enabled = kwargs.get('cors_enabled', False)
+        self.cors_enabled = kwargs.pop('cors_enabled', False)
         if self.cors_enabled:
             parts = method.split(',')
             method = ','.join(['OPTIONS'] + parts)
@@ -64,22 +64,25 @@ class HttpApiEntrypoint(HttpRequestHandler):
         except HttpError as exc:
             return self.response_from_exception(exc)
 
-        response = super().handle_request(request)
+        if self.cors_enabled and request.method.lower() == 'options':
+            response = self.response_from_result(result='')
+        else:
+            response = super().handle_request(request)
 
         # Some validation should be applied regarding cors headers
         if self.cors_enabled:
             context_data = self.server.context_data_from_headers(request)
             response.headers.add(
                 'Access-Control-Allow-Origin',
-                as_string(context_data.get('origin', constants.CORS_ALLOW_ORIGINS_LIST))
+                context_data['origin'] or as_string(constants.CORS_ALLOW_ORIGINS_LIST)
             )
             response.headers.add(
                 'Access-Control-Allow-Headers',
-                as_string(context_data.get('headers', constants.CORS_ALLOW_HEADERS_LIST))
+                context_data['headers'] or as_string(constants.CORS_ALLOW_HEADERS_LIST)
             )
             response.headers.add(
                 'Access-Control-Allow-Methods',
-                as_string(context_data.get('headers', constants.CORS_ALLOW_METHODS_LIST))
+                context_data['methods'] or as_string(constants.CORS_ALLOW_METHODS_LIST)
             )
             response.headers.add(
                 'Access-Control-Allow-Credentials',
