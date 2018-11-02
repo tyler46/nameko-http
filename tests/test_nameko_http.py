@@ -5,12 +5,12 @@
 
 import json
 import pytest
-from werkzeug.wrappers import Response
 
 from nameko.testing.utils import get_extension
 
 from nameko_http import api
 from nameko_http.exceptions import HttpNotAcceptable
+from nameko_http.utils import api_response
 
 
 
@@ -19,42 +19,47 @@ class ExampleService(object):
 
     @api('GET', '/foo/<int:bar>')
     def do_get(self, request, bar):
-        return Response(
-            json.dumps({'value': bar}),
-            mimetype='application/json'
+        return api_response(
+            status=200,
+            data={'value': bar}
         )
 
     @api('POST', '/post')
     def do_post(self, request):
         data = json.loads(request.get_data(as_text=True))
         value = data['value']
-        return Response(
-            json.dumps({'value': value}),
-            mimetype='application/json'
+        return api_response(
+            status=200,
+            data={'value': value}
         )
 
     @api('GET', '/status_code', cors_enabled=True)
     def do_cors_enabled(self, request):
-        return Response(
-            json.dumps({'status': 200}),
-            mimetype='application/json'
+        return api_response(
+            status=200,
+            data={'value': 1},
         )
 
     @api('POST', '/cors_post', cors_enabled=True)
     def do_post_cors_enabled(self, request):
         data = json.loads(request.get_data(as_text=True))
         value = data['value']
-        return Response(
-            json.dumps({'value': value}),
+        return api_response(
             status=201,
-            mimetype='application/json'
+            data={'value': value}
         )
 
     @api('GET', '/cors_headers', cors_enabled=True)
     def do_get_cors_headers(self, request):
-        return Response(
-            json.dumps({'status': 200}),
-            mimetype='application/json'
+        return api_response(
+            status=200,
+            data={'headers': request.headers}
+        )
+
+    @api('GET', '/no_content', cors_enabled=False)
+    def do_no_content(self, request):
+        return api_response(
+            status=204,
         )
 
 
@@ -135,4 +140,17 @@ def test_get_cors_headers(web_session):
     assert rv.headers['Access-Control-Allow-Origin'] == 'http://foo.example'
     assert rv.headers['Access-Control-Allow-Methods'] == 'GET'
     assert rv.headers['Access-Control-Allow-Headers'] == 'Accept, Authorization, Content-Type'
+
+
+def test_no_content(web_session):
+    rv = web_session.get(
+        '/no_content',
+        headers={
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        }
+    )
+    assert rv.status_code == 204
+    assert rv.headers['Content-Length'] == '0'
+
 
