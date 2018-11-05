@@ -64,30 +64,17 @@ class HttpApiEntrypoint(HttpRequestHandler):
         except HttpError as exc:
             return self.response_from_exception(exc)
 
-        if self.cors_enabled and request.method.lower() == 'options':
-            response = self.response_from_result(result='')
-        else:
-            response = super().handle_request(request)
+        self.request = request
 
-        # Some validation should be applied regarding cors headers
+        if self.cors_enabled and request.method.lower() == 'options':
+            return self.response_from_result(result='')
+
+        return super().handle_request(request)
+
+    def response_from_result(self, result):
+        response = super().response_from_result(result)
         if self.cors_enabled:
-            context_data = self.server.context_data_from_headers(request)
-            response.headers.add(
-                'Access-Control-Allow-Origin',
-                context_data['origin'] or as_string(constants.CORS_ALLOW_ORIGINS_LIST)
-            )
-            response.headers.add(
-                'Access-Control-Allow-Headers',
-                context_data['headers'] or as_string(constants.CORS_ALLOW_HEADERS_LIST)
-            )
-            response.headers.add(
-                'Access-Control-Allow-Methods',
-                context_data['methods'] or as_string(constants.CORS_ALLOW_METHODS_LIST)
-            )
-            response.headers.add(
-                'Access-Control-Allow-Credentials',
-                str(constants.CORS_ALLOW_CREDENTIALS).lower()
-            )
+            response = self.add_cors_headers(response)
 
         return response
 
@@ -101,7 +88,7 @@ class HttpApiEntrypoint(HttpRequestHandler):
 
         reason = safe_for_serialization(exc)
 
-        return Response(
+        response = Response(
             json.dumps({
                 'error_code': error_code,
                 'reason': reason
@@ -109,6 +96,33 @@ class HttpApiEntrypoint(HttpRequestHandler):
             status=status_code,
             mimetype='application/json'
         )
+        if self.cors_enabled:
+            response = self.add_cors_headers(response)
+
+        return response
+
+    def add_cors_headers(self, response):
+        """Adds required cors headers."""
+        # Some validation should be applied regarding cors headers
+        context_data = self.server.context_data_from_headers(self.request)
+        response.headers.add(
+            'Access-Control-Allow-Origin',
+            context_data['origin'] or as_string(constants.CORS_ALLOW_ORIGINS_LIST)
+        )
+        response.headers.add(
+            'Access-Control-Allow-Headers',
+            context_data['headers'] or as_string(constants.CORS_ALLOW_HEADERS_LIST)
+        )
+        response.headers.add(
+            'Access-Control-Allow-Methods',
+            context_data['methods'] or as_string(constants.CORS_ALLOW_METHODS_LIST)
+        )
+        response.headers.add(
+            'Access-Control-Allow-Credentials',
+            str(constants.CORS_ALLOW_CREDENTIALS).lower()
+        )
+
+        return response
 
 
 api = HttpApiEntrypoint.decorator
