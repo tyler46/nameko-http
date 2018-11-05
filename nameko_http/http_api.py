@@ -83,6 +83,9 @@ class HttpApiEntrypoint(HttpRequestHandler):
         if isinstance(exc, HttpError):
             status_code = exc.status_code
             error_code = getattr(exc, 'error_code', 'UNEXPECTED_ERROR')
+        elif isinstance(exc, self.expected_exceptions):
+            status_code = getattr(exc, 'status_code', 400)
+            error_code = getattr(exc, 'error_code', 'BAD_REQUEST')
         else:
             status_code, error_code = 500, 'UNEXPECTED_ERROR'
 

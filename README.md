@@ -9,7 +9,7 @@ Quickstart
 Install from Vermantia pypi:
 
 ```bash
-  $ pip install --extra-index-url https://pypi.vermantiagaming.com/simple nameko-mst
+  $ pip install --extra-index-url https://pypi.vermantiagaming.com/simple nameko-http
 ```
 
 Example:
