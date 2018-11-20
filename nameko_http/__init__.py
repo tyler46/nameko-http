@@ -4,7 +4,7 @@
 
 __author__ = """Spyros Markopoulos"""
 __email__ = 'virtualssuport@vermantia.com'
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 
 
 from .http_api import api
