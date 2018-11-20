@@ -1,6 +1,11 @@
 History
 =======
 
+0.1.4 (2018-11-20)
+------------------
+
+* Fix for https://discourse.nameko.io/t/webserver-can-be-subclassed-but-is-not-work-for-me/266
+
 0.1.3 (2018-11-05)
 ------------------
 
