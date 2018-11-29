@@ -1,6 +1,11 @@
 History
 =======
 
+0.1.5 (2018-11-29)
+------------------
+
+* Fix for empty request body when request method POST, PUT or PATCH.
+
 0.1.4 (2018-11-20)
 ------------------
 
