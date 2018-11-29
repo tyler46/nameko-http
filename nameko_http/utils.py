@@ -37,7 +37,7 @@ def get_mimetype(content_type):
 def is_json_request(mimetype):
     """Indicates if the mimetype is JSON or not. By default a request
     is considered to include JSON data if the mimetype is
-    ``application/json`` or ``aplication/*+json``.
+    ``application/json`` or ``application/*+json``.
     """
     if not mimetype:
         return False

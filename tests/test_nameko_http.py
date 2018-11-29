@@ -62,6 +62,10 @@ class ExampleService(object):
             status=204,
         )
 
+    @api('PUT', '/empty_body')
+    def handle_empty_body(self, request):
+        return api_response(status=204)
+
 
 
 @pytest.fixture
@@ -154,3 +158,9 @@ def test_no_content(web_session):
     assert rv.headers['Content-Length'] == '0'
 
 
+def test_empty_request_body(web_session):
+    rv = web_session.put(
+        '/empty_body',
+    )
+
+    assert rv.status_code == 204

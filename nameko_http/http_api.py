@@ -47,6 +47,7 @@ class HttpApiEntrypoint(HttpRequestHandler):
             HttpUnsupportedMediaType: Request method in ['post', 'put', 'pach'] but
                                       `Content-Type` does not support `application/json`.
         """
+        self.request = request
         accept = request.headers.get('accept', 'text/plain')
 
         try:
@@ -58,14 +59,16 @@ class HttpApiEntrypoint(HttpRequestHandler):
                 if mimetype is None:
                     mimetype = request.content_type
 
-                if not is_json_request(mimetype):
-                    raise HttpUnsupportedMediaType('JSON payload expected')
+                content_length = request.headers.get('content-length')
+
+                if content_length and content_length != '0':
+                    if not is_json_request(mimetype):
+                        raise HttpUnsupportedMediaType('JSON payload expected')
 
         except HttpError as exc:
             return self.response_from_exception(exc)
 
-        self.request = request
-
+        # OPTIONS case
         if self.cors_enabled and request.method.lower() == 'options':
             return self.response_from_result(result='')
 
