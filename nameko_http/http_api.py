@@ -113,15 +113,15 @@ class HttpApiEntrypoint(HttpRequestHandler):
         context_data = self.server.context_data_from_headers(self.request)
         response.headers.add(
             'Access-Control-Allow-Origin',
-            context_data['origin'] or as_string(constants.CORS_ALLOW_ORIGINS_LIST)
+            context_data.get('origin') or as_string(constants.CORS_ALLOW_ORIGINS_LIST)
         )
         response.headers.add(
             'Access-Control-Allow-Headers',
-            context_data['headers'] or as_string(constants.CORS_ALLOW_HEADERS_LIST)
+            context_data.get('headers') or as_string(constants.CORS_ALLOW_HEADERS_LIST)
         )
         response.headers.add(
             'Access-Control-Allow-Methods',
-            context_data['methods'] or as_string(constants.CORS_ALLOW_METHODS_LIST)
+            context_data.get('methods') or as_string(constants.CORS_ALLOW_METHODS_LIST)
         )
         response.headers.add(
             'Access-Control-Allow-Credentials',

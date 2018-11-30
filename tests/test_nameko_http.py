@@ -146,6 +146,21 @@ def test_get_cors_headers(web_session):
     assert rv.headers['Access-Control-Allow-Headers'] == 'Accept, Authorization, Content-Type'
 
 
+def test_options_cors_headers(web_session):
+    rv = web_session.options(
+        '/cors_headers',
+        headers={
+            'Accept': 'application/json',
+            'Access-Control-Request-Method': 'GET',
+            'Access-Control-Request-Headers': 'Accept, Authorization, Content-Type'
+        }
+    )
+    assert 'Access-Control-Allow-Origin' in rv.headers
+    assert rv.headers['Access-Control-Allow-Origin'] == '*'
+    assert rv.headers['Access-Control-Allow-Methods'] == 'GET'
+    assert rv.headers['Access-Control-Allow-Headers'] == 'Accept, Authorization, Content-Type'
+
+
 def test_no_content(web_session):
     rv = web_session.get(
         '/no_content',
