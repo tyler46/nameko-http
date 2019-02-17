@@ -6,10 +6,10 @@ Http utilities for Nameko built-in HTTP extension
 Quickstart
 ----------
 
-Install from Vermantia pypi:
+Install from pypi:
 
 ```bash
-  $ pip install --extra-index-url https://pypi.vermantiagaming.com/simple nameko-http
+  $ pip install nameko-http
 ```
 
 Example:
