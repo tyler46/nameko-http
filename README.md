@@ -76,11 +76,6 @@ Date: Thu, 01 Nov 2018 14:23:21 GMT
 {"value": "foo"}
 ```
 
-Features
---------
-
-* Optional payload validation using Marshmallow Schemas
-
 Credits
 -------
 

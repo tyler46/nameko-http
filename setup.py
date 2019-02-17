@@ -14,7 +14,7 @@ with open('HISTORY.md') as history_file:
 
 setup(
     author="Spyros Markopoulos",
-    author_email='virtualssuport@vermantia.com',
+    author_email='mail.doctor46@gmail.com',
     classifiers=[
         'Programming Language :: Python',
         'Intended Audience :: Developers',
@@ -57,7 +57,7 @@ setup(
         'pytest>=1.9.3',
         'requests-mock>=1.5.2',
     ],
-    url='https://app.assembla.com/spaces/retail-platform/git-12/source',
+    url='https://github.com/tyler46/nameko_http',
     version='0.1.6',
     zip_safe=False,
 )
