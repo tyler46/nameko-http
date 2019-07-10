@@ -19,6 +19,8 @@ class HttpApiEntrypoint(HttpRequestHandler):
     """Rest API http Entrypoint."""
     server = WebServer()
 
+    # TODO: Add authorization header parsing on context_from_headers
+
     def __init__(self, method, url, **kwargs):
         self.cors_enabled = kwargs.pop('cors_enabled', False)
         if self.cors_enabled:
@@ -48,6 +50,11 @@ class HttpApiEntrypoint(HttpRequestHandler):
                                       `Content-Type` does not support `application/json`.
         """
         self.request = request
+
+        # OPTIONS case
+        if self.cors_enabled and request.method.lower() == 'options':
+            return self.response_from_result(result='')
+
         accept = request.headers.get('accept', 'text/plain')
 
         try:
@@ -67,10 +74,6 @@ class HttpApiEntrypoint(HttpRequestHandler):
 
         except HttpError as exc:
             return self.response_from_exception(exc)
-
-        # OPTIONS case
-        if self.cors_enabled and request.method.lower() == 'options':
-            return self.response_from_result(result='')
 
         return super().handle_request(request)
 

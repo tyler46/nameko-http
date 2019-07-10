@@ -150,7 +150,6 @@ def test_options_cors_headers(web_session):
     rv = web_session.options(
         '/cors_headers',
         headers={
-            'Accept': 'application/json',
             'Access-Control-Request-Method': 'GET',
             'Access-Control-Request-Headers': 'Accept, Authorization, Content-Type'
         }
