@@ -58,6 +58,6 @@ setup(
         'requests-mock>=1.5.2',
     ],
     url='https://github.com/tyler46/nameko_http',
-    version='0.1.6',
+    version='0.1.7',
     zip_safe=False,
 )
