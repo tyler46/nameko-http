@@ -1,6 +1,16 @@
 History
 =======
 
+0.1.7 (2019-07-10)
+------------------
+
+* Fix for OPTIONS method when `Accept` headers is missing.
+
+0.1.6 (2019-02-17)
+------------------
+
+* Hot fix for CORS headers.
+    
 0.1.5 (2018-11-29)
 ------------------
 
