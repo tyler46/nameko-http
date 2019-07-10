@@ -32,6 +32,7 @@ setup(
         'python-mimeparse>=1.6.0',
     ],
     long_description=readme + '\n\n' + history,
+    long_description_content_type='text/markdown',
     include_package_data=True,
     keywords='nameko_http',
     name='nameko_http',
